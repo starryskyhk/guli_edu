@@ -9,6 +9,7 @@ import com.starrysky.eduservice.entity.chapter.VideoVo;
 import com.starrysky.eduservice.mapper.EduChapterMapper;
 import com.starrysky.eduservice.service.EduChapterService;
 import com.starrysky.eduservice.service.EduVideoService;
+import com.starrysky.servicebase.exceptionHandler.StarrySkyException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,5 +71,28 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         }
 
         return chapterVoArrayList;
+    }
+
+    @Override
+    public boolean deleteChapter(String chapterId) {
+        //根据chapterId查询小节，如果有则不删除，没有则删除
+        QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
+        wrapper.eq("chapter_id",chapterId);
+        int count = videoService.count(wrapper);
+        //如果有小节
+        if(count >0){
+            throw new StarrySkyException(20001,"请先删除所有小节");
+        }else{
+            int result = baseMapper.deleteById(chapterId);
+            return result>0;
+        }
+    }
+
+    @Override
+    public boolean removeByCourseId(String courseId) {
+        QueryWrapper<EduChapter> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("course_id", courseId);
+        Integer count = baseMapper.delete(queryWrapper);
+        return null != count && count > 0;
     }
 }
