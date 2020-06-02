@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class EduVideoController {
     @Autowired
     private EduVideoService videoService;
+
     @ApiOperation(value = "添加课时")
     @PostMapping("addVideo")
     public R addVideo(@ApiParam(name = "video", value = "课时对象", required = true)  @RequestBody EduVideo video) {
@@ -57,8 +58,7 @@ public class EduVideoController {
     public R removeById(
             @ApiParam(name = "id", value = "课时ID", required = true)
             @PathVariable String id){
-
-        boolean result = videoService.removeById(id);
+        boolean result = videoService.removeVideoById(id);
         if(result){
             return R.ok();
         }else{

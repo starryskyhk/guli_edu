@@ -62,7 +62,7 @@ public class EduTeacherController {
     @GetMapping("{current}/{limit}")
     public R pageListTeacher(@ApiParam(name = "current", value = "当前页", required = true) @PathVariable long current, @ApiParam(name = "limit", value = "每页显示条数", required = true) @PathVariable long limit) {
         Page<EduTeacher> pageTeacher = new Page<>(current, limit);
-        //调用方法安分页
+        //调用方法分页
         teacherService.page(pageTeacher, null);
         long total = pageTeacher.getTotal();//总记录数
         List<EduTeacher> records = pageTeacher.getRecords();
