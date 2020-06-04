@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  * 讲师 服务实现类
@@ -56,4 +60,31 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         queryWrapper.orderByDesc("gmt_create");
         teacherMapper.selectPage(pageTeacher, queryWrapper);
     }
+
+    @Override
+    public Map<String, Object> getTeacherFrontList(Page<EduTeacher> pageTeacher) {
+        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<EduTeacher>().orderByDesc("id");
+        baseMapper.selectPage(pageTeacher,wrapper);
+        List<EduTeacher> records = pageTeacher.getRecords();
+        long current = pageTeacher.getCurrent();
+        long pages = pageTeacher.getPages();
+        long size = pageTeacher.getSize();
+        long total = pageTeacher.getTotal();
+        //是否有下一页与上一页
+        boolean hasNext = pageTeacher.hasNext();
+        boolean hasPrevious = pageTeacher.hasPrevious();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("items", records);
+        map.put("current", current);
+        map.put("pages", pages);
+        map.put("size", size);
+        map.put("total", total);
+        map.put("hasNext", hasNext);
+        map.put("hasPrevious", hasPrevious);
+
+        return map;
+    }
+
+
 }

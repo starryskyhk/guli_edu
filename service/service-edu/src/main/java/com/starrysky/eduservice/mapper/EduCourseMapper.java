@@ -3,6 +3,7 @@ package com.starrysky.eduservice.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.starrysky.eduservice.entity.EduCourse;
 import com.starrysky.eduservice.entity.vo.CoursePublishVo;
+import com.starrysky.eduservice.entity.frontvo.CourseWebVo;
 
 /**
  * <p>
@@ -14,4 +15,6 @@ import com.starrysky.eduservice.entity.vo.CoursePublishVo;
  */
 public interface EduCourseMapper extends BaseMapper<EduCourse> {
     CoursePublishVo getCoursePublishInfo(String id);
+
+    CourseWebVo selectInfoWebById(String id);
 }

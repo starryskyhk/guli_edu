@@ -36,7 +36,7 @@ public class EduSubjectController {
     }
     //课程分类列表显示(树形)
     @ApiOperation(value = "查询课程信息，树状显示")
-    @GetMapping("getAllSubjet")
+    @GetMapping("getAllSubject")
     public R getAllSubjet() {
         List<OneSubject> list = subjectService.getAllOneTwoSubject();
         return R.ok().data("list",list);
