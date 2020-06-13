@@ -3,6 +3,7 @@ package com.starrysky.educenter.controller;
 
 import com.starrysky.commonutils.JwtUtils;
 import com.starrysky.commonutils.R;
+import com.starrysky.commonutils.ordervo.UcenterMemberOrder;
 import com.starrysky.educenter.entity.UcenterMember;
 import com.starrysky.educenter.entity.vo.LoginVo;
 import com.starrysky.educenter.entity.vo.RegisterVo;
@@ -10,6 +11,8 @@ import com.starrysky.educenter.service.UcenterMemberService;
 import com.starrysky.servicebase.exceptionHandler.StarrySkyException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +48,7 @@ public class UcenterMemberController {
         memberService.register(registerVo);
         return R.ok();
     }
-    @ApiOperation(value = "根据token获取登录信息")
+    @ApiOperation(value = "根据请求头中的token获取登录信息")
     @GetMapping("auth/getLoginInfo")
     public R getLoginInfo(HttpServletRequest request){
         try {
@@ -59,6 +62,7 @@ public class UcenterMemberController {
     }
 
     //根据token字符串获取用户信息
+    @ApiOperation(value = "根据token获取用户信息")
     @GetMapping("getInfoUc/{id}")
     public UcenterMember getInfo(@PathVariable String id) {
         //根据用户id获取用户信息
@@ -66,6 +70,24 @@ public class UcenterMemberController {
         System.out.println("注册端："+ucenterMember);
         return ucenterMember;
     }
+    //通过id获取用户信息
+    @ApiOperation(value = "根据用户id获取用户信息")
+    @PostMapping("getUserInfoOrder/{id}")
+    public UcenterMemberOrder getUserInfoOrder(@PathVariable String id) {
+        UcenterMember member = memberService.getById(id);
+        //把member中的值赋给UcenterMemberOrder
+        UcenterMemberOrder memberOrder = new UcenterMemberOrder();
+        BeanUtils.copyProperties(member,memberOrder);
+        return memberOrder;
+    }
+    @ApiOperation("查询某一天注册人数")
+    @GetMapping(value = "countregister/{day}")
+    public R registerCount(@ApiParam(name = "day",value = "日期",required = true) @PathVariable String day){
+        Integer count = memberService.countRegisterByDay(day);
+        return R.ok().data("countRegister", count);
+    }
+
+
 
 }
 

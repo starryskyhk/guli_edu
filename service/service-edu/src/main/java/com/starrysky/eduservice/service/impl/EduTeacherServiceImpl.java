@@ -31,7 +31,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     public void pageQuery(Page<EduTeacher> pageTeacher, TeacherQuery teacherQuery) {
         QueryWrapper<EduTeacher> queryWrapper = new QueryWrapper<>();
 //        queryWrapper.orderByAsc("sort");
-
+        System.out.println("---"+teacherQuery == null);
         if (teacherQuery == null){
             baseMapper.selectPage(pageTeacher, queryWrapper);
             return;
